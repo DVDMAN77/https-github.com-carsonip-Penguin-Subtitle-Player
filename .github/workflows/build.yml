@@ -17,16 +17,13 @@ jobs:
           version: '5.15.2'
           arch: 'win64_msvc2019_64'
 
-      - name: Configure with CMake
+      - name: Build with qmake
         run: |
-          cmake -S . -B build -G "NMake Makefiles"
-
-      - name: Build project
-        run: |
-          cmake --build build
+          qmake Penguin-Subtitle-Player.pro
+          nmake
 
       - name: Upload executable
         uses: actions/upload-artifact@v4
         with:
           name: penguin-exe
-          path: build/Penguin-Subtitle-Player.exe
+          path: ./release/Penguin-Subtitle-Player.exe
