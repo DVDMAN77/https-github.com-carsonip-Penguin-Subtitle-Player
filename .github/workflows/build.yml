@@ -1,0 +1,30 @@
+name: Build Penguin Subtitle Player
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          arch: 'win64_msvc2019_64'
+
+      - name: Configure and Build
+        run: |
+          mkdir build
+          cd build
+          cmake .. -G "NMake Makefiles"
+          nmake
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: penguin-exe
+          path: build/Penguin-Subtitle-Player.exe
