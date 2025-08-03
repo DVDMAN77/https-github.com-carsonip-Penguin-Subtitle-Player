@@ -6,8 +6,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Qt
@@ -16,12 +17,13 @@ jobs:
           version: '5.15.2'
           arch: 'win64_msvc2019_64'
 
-      - name: Configure and Build
+      - name: Configure with CMake
         run: |
-          mkdir build
-          cd build
-          cmake .. -G "NMake Makefiles"
-          nmake
+          cmake -S . -B build -G "NMake Makefiles"
+
+      - name: Build project
+        run: |
+          cmake --build build
 
       - name: Upload executable
         uses: actions/upload-artifact@v4
