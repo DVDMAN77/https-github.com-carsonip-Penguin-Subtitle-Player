@@ -24,7 +24,7 @@ jobs:
           nmake
 
       - name: Upload executable
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: penguin-exe
           path: build/Penguin-Subtitle-Player.exe
