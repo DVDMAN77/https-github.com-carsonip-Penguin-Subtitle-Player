@@ -1,6 +1,8 @@
 name: Build Penguin Subtitle Player
 
 on:
+  push:
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -8,31 +10,23 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Set up Qt
+      - name: Setup Qt 5.15.2 for MSVC 2019 64-bit
         uses: jurplel/install-qt-action@v3
         with:
           version: '5.15.2'
           arch: 'win64_msvc2019_64'
 
-      - name: Build with qmake and nmake
+      - name: Build Penguin Subtitle Player
         shell: cmd
         run: |
-          cd src
+          REM Active l'environnement Visual Studio (ajuste le chemin si besoin)
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x64
+          
+          REM Lance qmake sur le fichier .pro à la racine
           qmake Penguin-Subtitle-Player.pro
+
+          REM Compile avec nmake
           nmake
-
-      - name: Create portable build with windeployqt
-        shell: cmd
-        run: |
-          mkdir Penguin-Subtitle-Player-portable
-          copy src\release\Penguin-Subtitle-Player.exe Penguin-Subtitle-Player-portable\
-          windeployqt Penguin-Subtitle-Player-portable\Penguin-Subtitle-Player.exe
-
-      - name: Upload portable folder
-        uses: actions/upload-artifact@v4
-        with:
-          name: Penguin-Subtitle-Player-portable
-          path: Penguin-Subtitle-Player-portable
