@@ -17,11 +17,12 @@ jobs:
           version: '5.15.2'
           arch: 'win64_msvc2019_64'
 
-      - name: Setup MSVC environment and build
+      - name: Setup MSVC and build
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          qmake Penguin-Subtitle-Player.pro
+          cd %GITHUB_WORKSPACE%
+          qmake PenguinSubtitlePlayer.pro
           nmake
 
       - name: Upload binary
